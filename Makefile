@@ -17,6 +17,9 @@ up: ## Start the docker containers
 down: ## Stop the docker containers
 	docker compose down
 
+restart: ## Restart the docker containers
+	docker compose restart
+
 logs: ## Show the logs
 	docker compose logs -f
 

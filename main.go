@@ -31,7 +31,7 @@ func setupRouter() *gin.Engine {
 
 func main() {
 	cnf, err := config.New()
-	db.DBOpen(cnf.DB_HOST, cnf.DB_PORT, cnf.DB_USER, cnf.DB_PASS, cnf.DB_DATABASE)
+	db.DBOpen()
 	defer db.DBClose()
 	r := setupRouter()
 	if err != nil {

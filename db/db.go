@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nakamurakzz/go-gin-api/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -16,20 +17,8 @@ type SQLHandler struct {
 var dbConn *SQLHandler
 var err error
 
-func DBOpen(
-	host string,
-	port string,
-	user string,
-	pass string,
-	database string,
-) {
-	dbConn, err = NewSQLHandler(
-		host,
-		port,
-		user,
-		pass,
-		database,
-	)
+func DBOpen() {
+	dbConn, err = NewSQLHandler()
 	if err != nil {
 		panic(err)
 	}
@@ -40,14 +29,9 @@ func DBClose() {
 	sqlDB.Close()
 }
 
-func NewSQLHandler(
-	host string,
-	port string,
-	user string,
-	pass string,
-	database string,
-) (*SQLHandler, error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, host, port, database)
+func NewSQLHandler() (*SQLHandler, error) {
+	cnf := config.GetConfig()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cnf.DB_USER, cnf.DB_PASS, cnf.DB_HOST, cnf.DB_PORT, cnf.DB_DATABASE)
 
 	var db *gorm.DB
 	var err error

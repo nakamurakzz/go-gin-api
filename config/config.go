@@ -19,6 +19,8 @@ type Config struct {
 	DB_DATABASE string
 }
 
+var cfg *Config
+
 func New() (*Config, error) {
 	err := godotenv.Load()
 	if err != nil {
@@ -35,7 +37,7 @@ func New() (*Config, error) {
 		return nil, err
 	}
 
-	cfg := &Config{
+	cfg = &Config{
 		Env:         "dev",
 		Port:        portInt,
 		DB_HOST:     dbHost,
@@ -48,4 +50,8 @@ func New() (*Config, error) {
 		return nil, err
 	}
 	return cfg, nil
+}
+
+func GetConfig() *Config {
+	return cfg
 }
