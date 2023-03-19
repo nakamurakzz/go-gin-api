@@ -10,6 +10,7 @@ type Site struct {
 
 type SiteRepository interface {
 	FindAll() ([]*Site, error)
+	FindByID(id int) (*Site, error)
 }
 
 type SiteRepositoryImpl struct {
@@ -22,4 +23,13 @@ func (s *SiteRepositoryImpl) FindAll() ([]*Site, error) {
 		return nil, err
 	}
 	return sites, nil
+}
+
+func (s *SiteRepositoryImpl) FindByID(id int) (*Site, error) {
+	conn := db.GetDBConn().DB
+	var site Site
+	if err := conn.Where("id = ?", id).Find(&site).Error; err != nil {
+		return nil, err
+	}
+	return &site, nil
 }

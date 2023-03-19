@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nakamurakzz/go-gin-api/config"
@@ -23,12 +24,46 @@ func setupRouter() *gin.Engine {
 	api := r.Group("/api/")
 	{
 		api.GET("/sites", getSite)
+		api.GET("/sites/:id", getSiteById)
 		api.POST("/sites", getSite)   // TODO: 修正
 		api.PATCH("/sites", getSite)  // TODO: 修正
 		api.DELETE("/sites", getSite) // TODO: 修正
 	}
 
 	return r
+}
+
+func getSiteById(c *gin.Context) {
+	message := "ok"
+	status := http.StatusOK
+	var data interface{}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		message = err.Error()
+		data = nil
+		status = http.StatusInternalServerError
+		c.IndentedJSON(status, gin.H{
+			"message": message,
+			"data":    data,
+		})
+	}
+
+	siteRepository := site.SiteRepositoryImpl{}
+	site, err := siteRepository.FindByID(id)
+
+	if err != nil {
+		message = err.Error()
+		data = nil
+		status = http.StatusInternalServerError
+	} else {
+		data = site
+	}
+
+	c.IndentedJSON(status, gin.H{
+		"message": message,
+		"data":    data,
+	})
 }
 
 func getSite(c *gin.Context) {
