@@ -16,10 +16,14 @@ type SiteRepository interface {
 type SiteRepositoryImpl struct {
 }
 
-func (s *SiteRepositoryImpl) FindAll() ([]*Site, error) {
+type SiteQuery struct {
+	isEnabled bool
+}
+
+func (s *SiteRepositoryImpl) FindAll(siteQuery SiteQuery) ([]*Site, error) {
 	conn := db.GetDBConn().DB
 	var sites []*Site
-	if err := conn.Where("isEnabled = ?", true).Find(&sites).Error; err != nil {
+	if err := conn.Where("isEnabled = ?", siteQuery.isEnabled).Find(&sites).Error; err != nil {
 		return nil, err
 	}
 	return sites, nil

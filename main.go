@@ -1,11 +1,7 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"math/rand"
-	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nakamurakzz/go-gin-api/config"
@@ -23,85 +19,14 @@ func setupRouter() *gin.Engine {
 
 	api := r.Group("/api/")
 	{
-		api.GET("/sites", getSite)
-		api.GET("/sites/:id", getSiteById)
-		api.POST("/sites", getSite)   // TODO: 修正
-		api.PATCH("/sites", getSite)  // TODO: 修正
-		api.DELETE("/sites", getSite) // TODO: 修正
+		api.GET("/sites", site.GetSite)
+		api.GET("/sites/:id", site.GetSiteById)
+		api.POST("/sites", site.GetSite)   // TODO: 修正
+		api.PATCH("/sites", site.GetSite)  // TODO: 修正
+		api.DELETE("/sites", site.GetSite) // TODO: 修正
 	}
 
 	return r
-}
-
-func getSiteById(c *gin.Context) {
-	message := "ok"
-	status := http.StatusOK
-	var data interface{}
-
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		message = err.Error()
-		data = nil
-		status = http.StatusInternalServerError
-		c.IndentedJSON(status, gin.H{
-			"message": message,
-			"data":    data,
-		})
-	}
-
-	siteRepository := site.SiteRepositoryImpl{}
-	site, err := siteRepository.FindByID(id)
-
-	if err != nil {
-		message = err.Error()
-		data = nil
-		status = http.StatusInternalServerError
-	} else {
-		data = site
-	}
-
-	c.IndentedJSON(status, gin.H{
-		"message": message,
-		"data":    data,
-	})
-}
-
-func getSite(c *gin.Context) {
-	var data interface{}
-
-	message := "ok"
-	status := http.StatusOK
-
-	// if err := errorFunc(); err != nil {
-	// 	message = err.Error()
-	// 	data = nil
-	// 	status = http.StatusInternalServerError
-	// }
-
-	// SiteRepositoryを使ってDBからデータを取得する
-	siteRepository := site.SiteRepositoryImpl{}
-	sites, err := siteRepository.FindAll()
-
-	if err != nil {
-		message = err.Error()
-		data = nil
-		status = http.StatusInternalServerError
-	} else {
-		data = sites
-	}
-
-	c.IndentedJSON(status, gin.H{
-		"message": message,
-		"data":    data,
-	})
-}
-
-// 10回に1度はエラーになる関数
-func errorFunc() error {
-	if rand.Intn(10) == 0 {
-		return nil
-	}
-	return errors.New("2回に1度発生するERROR")
 }
 
 func main() {
