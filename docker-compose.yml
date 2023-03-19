@@ -4,7 +4,30 @@ services:
     build:
       args:
         - target=dev
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_DATABASE: site
     volumes:
       - .:/app
     ports:
       - "3000:3000"
+
+  db:
+    image: mysql:8.0.29
+    platform: linux/amd64
+    container_name: site-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: site
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - db_data:/var/lib/mysql
+      - $PWD/_toos/mysql/conf.d:/etc/mysql/conf.d:cached
+    ports:
+      - "3306:3306"
+volumes:
+  db_data:
