@@ -1,15 +1,15 @@
 package site
 
 type SiteEntity struct {
-	ID        int
-	Name      string
-	IsEnabled bool
+	iD        int
+	name      string
+	isEnabled bool
 }
 
 func NewSiteEntity(param SiteEntity) *SiteEntity {
 	return &SiteEntity{
-		ID:        param.ID,
-		Name:      param.Name,
-		IsEnabled: param.IsEnabled,
+		iD:        param.iD,
+		name:      param.name,
+		isEnabled: param.isEnabled,
 	}
 }
