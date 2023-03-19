@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: Sites API
+  version: 1.0.0  
+servers:
+  - url: "http://localhost:3000/api"
+paths:
+  /sites:
+    get:
+      summary: Retrieve a list of sites
+      tags:
+        - "現場"
+      responses:
+        '200':
+          description: A list of sites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
+    post:
+      summary: Create a new site
+      tags:
+        - "現場"      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        '201':
+          description: The created site
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+    patch:
+      summary: Update a site
+      tags:
+        - "現場"      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Site'
+      responses:
+        '200':
+          description: The updated site
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+    delete:
+      summary: Delete a site
+      tags:
+        - "現場"      
+      responses:
+        '204':
+          description: The site has been deleted
+components:
+  schemas:
+    Site:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        isEnable:
+          type: boolean
+      required:
+        - name
