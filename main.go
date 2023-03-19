@@ -30,17 +30,17 @@ func setupRouter() *gin.Engine {
 }
 
 type site struct {
-	id       int
-	name     string
-	isEnable bool
+	id        int
+	name      string
+	isEnabled bool
 }
 
 func getSite(c *gin.Context) {
 	data := []site{
 		{
-			id:       1,
-			name:     "test",
-			isEnable: true,
+			id:        1,
+			name:      "test",
+			isEnabled: true,
 		},
 	}
 

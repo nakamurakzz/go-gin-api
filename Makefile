@@ -25,3 +25,7 @@ ps: ## Show the running containers
 
 test: ## Run the tests
 	go test -race -shuffle=on ./...
+
+## database
+migrate: ## Run the database migrations
+	mysqldef site -uadmin -padmin -h127.0.0.1 -P3306 --file=./_tools/mysql/schema.sql
