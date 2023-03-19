@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nakamurakzz/go-gin-api/config"
+	"github.com/nakamurakzz/go-gin-api/db"
 )
 
 func setupRouter() *gin.Engine {
@@ -68,8 +69,9 @@ func errorFunc() error {
 }
 
 func main() {
-	r := setupRouter()
 	cnf, err := config.New()
+	db.DBOpen(cnf.DB_HOST, cnf.DB_PORT, cnf.DB_USER, cnf.DB_PASS, cnf.DB_DATABASE)
+	r := setupRouter()
 	if err != nil {
 		panic(err)
 	}
