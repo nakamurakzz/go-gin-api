@@ -11,6 +11,7 @@ type Site struct {
 type SiteRepository interface {
 	FindAll() ([]*SiteEntity, error)
 	FindByID(id int) (*SiteEntity, error)
+	Create(site SiteEntity) (*SiteEntity, error)
 }
 
 type SiteRepositoryImpl struct {
@@ -23,7 +24,7 @@ type SiteQuery struct {
 func (s *SiteRepositoryImpl) FindAll(siteQuery SiteQuery) ([]*SiteEntity, error) {
 	conn := db.GetDBConn().DB
 	var sites []*Site
-	if err := conn.Where("isEnabled = ?", siteQuery.isEnabled).Find(&sites).Error; err != nil {
+	if err := conn.Where("is_enabled = ?", siteQuery.isEnabled).Find(&sites).Error; err != nil {
 		return nil, err
 	}
 	var returnSites []*SiteEntity
@@ -50,6 +51,25 @@ func (s *SiteRepositoryImpl) FindByID(id int) (*SiteEntity, error) {
 			ID:        site.ID,
 			Name:      site.Name,
 			IsEnabled: site.IsEnabled,
+		},
+	)
+	return returnSite, nil
+}
+
+func (s *SiteRepositoryImpl) Create(site SiteEntity) (*SiteEntity, error) {
+	conn := db.GetDBConn().DB
+	newSite := Site{
+		Name:      site.Name,
+		IsEnabled: site.IsEnabled,
+	}
+	if err := conn.Create(&newSite).Error; err != nil {
+		return nil, err
+	}
+	var returnSite = NewSiteEntity(
+		SiteEntity{
+			ID:        newSite.ID,
+			Name:      newSite.Name,
+			IsEnabled: newSite.IsEnabled,
 		},
 	)
 	return returnSite, nil

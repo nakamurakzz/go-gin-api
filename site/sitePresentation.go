@@ -32,6 +32,7 @@ func GetSite(c *gin.Context) {
 	}
 	data = sites
 
+	// application/jsonでレスポンスを返す
 	c.IndentedJSON(status, gin.H{
 		"message": message,
 		"data":    data,
@@ -63,6 +64,31 @@ func GetSiteById(c *gin.Context) {
 	}
 
 	data = site
+
+	c.IndentedJSON(status, gin.H{
+		"message": message,
+		"data":    data,
+	})
+}
+
+type SiteCreateRequestBody struct {
+	Name string `json:"name"`
+}
+
+func PostSite(c *gin.Context) {
+	message := "ok"
+	status := http.StatusOK
+
+	var site SiteCreateRequestBody
+	if err := c.BindJSON(&site); err != nil {
+		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	// SiteRepositoryを使ってDBにデータを保存する
+	data, err := siteUsecase.Create(site)
+	if err != nil {
+		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+	}
 
 	c.IndentedJSON(status, gin.H{
 		"message": message,

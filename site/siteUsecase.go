@@ -27,3 +27,14 @@ func (s *SiteUsecaseImpl) FindByID(id int) (*SiteEntity, error) {
 	}
 	return site, nil
 }
+
+func (s *SiteUsecaseImpl) Create(siteReq SiteCreateRequestBody) (*SiteEntity, error) {
+	site := createSiteEntity(SiteCreateParam{
+		Name: siteReq.Name,
+	})
+	newSite, err := siteRepository.Create(site)
+	if err != nil {
+		return nil, err
+	}
+	return newSite, nil
+}
