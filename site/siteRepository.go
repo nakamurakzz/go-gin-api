@@ -3,9 +3,9 @@ package site
 import "github.com/nakamurakzz/go-gin-api/db"
 
 type Site struct {
-	iD        int
-	name      string
-	isEnabled bool
+	ID        int
+	Name      string
+	IsEnabled bool
 }
 
 type SiteRepository interface {
@@ -30,9 +30,9 @@ func (s *SiteRepositoryImpl) FindAll(siteQuery SiteQuery) ([]*SiteEntity, error)
 	for _, site := range sites {
 		returnSites = append(returnSites, NewSiteEntity(
 			SiteEntity{
-				iD:        site.iD,
-				name:      site.name,
-				isEnabled: site.isEnabled,
+				ID:        site.ID,
+				Name:      site.Name,
+				IsEnabled: site.IsEnabled,
 			},
 		))
 	}
@@ -47,9 +47,9 @@ func (s *SiteRepositoryImpl) FindByID(id int) (*SiteEntity, error) {
 	}
 	var returnSite = NewSiteEntity(
 		SiteEntity{
-			iD:        site.iD,
-			name:      site.name,
-			isEnabled: site.isEnabled,
+			ID:        site.ID,
+			Name:      site.Name,
+			IsEnabled: site.IsEnabled,
 		},
 	)
 	return returnSite, nil
