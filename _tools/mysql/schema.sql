@@ -1,0 +1,10 @@
+CREATE TABLE
+    `sites` (
+        `id` BIGINT NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(255) NOT NULL,
+        `isEnabled` TINYINT(1) NOT NULL,
+        `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (`id`),
+        UNIQUE KEY `name` (`name`)
+    ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'Site';
