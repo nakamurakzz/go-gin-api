@@ -10,7 +10,7 @@ type SiteUsecaseImpl struct {
 
 var siteRepository = SiteRepositoryImpl{}
 
-func (s *SiteUsecaseImpl) FindAll() ([]*Site, error) {
+func (s *SiteUsecaseImpl) FindAll() ([]*SiteEntity, error) {
 	sites, err := siteRepository.FindAll(SiteQuery{
 		isEnabled: true,
 	})
@@ -20,7 +20,7 @@ func (s *SiteUsecaseImpl) FindAll() ([]*Site, error) {
 	return sites, nil
 }
 
-func (s *SiteUsecaseImpl) FindByID(id int) (*Site, error) {
+func (s *SiteUsecaseImpl) FindByID(id int) (*SiteEntity, error) {
 	site, err := siteRepository.FindByID(id)
 	if err != nil {
 		return nil, err

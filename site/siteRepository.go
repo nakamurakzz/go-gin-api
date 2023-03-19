@@ -9,8 +9,8 @@ type Site struct {
 }
 
 type SiteRepository interface {
-	FindAll() ([]*Site, error)
-	FindByID(id int) (*Site, error)
+	FindAll() ([]*SiteEntity, error)
+	FindByID(id int) (*SiteEntity, error)
 }
 
 type SiteRepositoryImpl struct {
@@ -20,20 +20,37 @@ type SiteQuery struct {
 	isEnabled bool
 }
 
-func (s *SiteRepositoryImpl) FindAll(siteQuery SiteQuery) ([]*Site, error) {
+func (s *SiteRepositoryImpl) FindAll(siteQuery SiteQuery) ([]*SiteEntity, error) {
 	conn := db.GetDBConn().DB
 	var sites []*Site
 	if err := conn.Where("isEnabled = ?", siteQuery.isEnabled).Find(&sites).Error; err != nil {
 		return nil, err
 	}
-	return sites, nil
+	var returnSites []*SiteEntity
+	for _, site := range sites {
+		returnSites = append(returnSites, NewSiteEntity(
+			SiteEntity{
+				ID:        site.ID,
+				Name:      site.Name,
+				IsEnabled: site.IsEnabled,
+			},
+		))
+	}
+	return returnSites, nil
 }
 
-func (s *SiteRepositoryImpl) FindByID(id int) (*Site, error) {
+func (s *SiteRepositoryImpl) FindByID(id int) (*SiteEntity, error) {
 	conn := db.GetDBConn().DB
 	var site Site
 	if err := conn.Where("id = ?", id).Find(&site).Error; err != nil {
 		return nil, err
 	}
-	return &site, nil
+	var returnSite = NewSiteEntity(
+		SiteEntity{
+			ID:        site.ID,
+			Name:      site.Name,
+			IsEnabled: site.IsEnabled,
+		},
+	)
+	return returnSite, nil
 }
