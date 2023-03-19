@@ -79,3 +79,7 @@ func NewSQLHandler(
 
 	return sqlHandler, nil
 }
+
+func GetDBConn() *SQLHandler {
+	return dbConn
+}
