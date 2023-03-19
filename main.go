@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/nakamurakzz/go-gin-api/config"
 	"github.com/nakamurakzz/go-gin-api/db"
@@ -17,11 +18,13 @@ func setupRouter() *gin.Engine {
 		c.Next()
 	})
 
+	r.Use(cors.Default())
+
 	api := r.Group("/api/")
 	{
 		api.GET("/sites", site.GetSite)
 		api.GET("/sites/:id", site.GetSiteById)
-		api.POST("/sites", site.GetSite)   // TODO: 修正
+		api.POST("/sites", site.PostSite)  // TODO: 修正
 		api.PATCH("/sites", site.GetSite)  // TODO: 修正
 		api.DELETE("/sites", site.GetSite) // TODO: 修正
 	}
