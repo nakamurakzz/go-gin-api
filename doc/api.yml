@@ -58,10 +58,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Site'
+  /sites/{siteId}:
+    get:
+      summary: Get a site
+      tags:
+        - "現場" 
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Get a site
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
     delete:
       summary: Delete a site
       tags:
-        - "現場"      
+        - "現場" 
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '204':
           description: The site has been deleted
