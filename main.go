@@ -24,9 +24,9 @@ func setupRouter() *gin.Engine {
 	{
 		api.GET("/sites", site.GetSite)
 		api.GET("/sites/:id", site.GetSiteById)
-		api.POST("/sites", site.PostSite)  // TODO: 修正
-		api.PATCH("/sites", site.GetSite)  // TODO: 修正
-		api.DELETE("/sites", site.GetSite) // TODO: 修正
+		api.POST("/sites", site.PostSite)
+		api.PATCH("/sites", site.GetSite) // TODO: 修正
+		api.DELETE("/sites/:id", site.DeleteSite)
 	}
 
 	return r

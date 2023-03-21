@@ -1,16 +1,11 @@
 package site
 
-type SiteUsecase interface {
-	FindAll() ([]*Site, error)
-	FindByID(id int) (*Site, error)
-}
-
-type SiteUsecaseImpl struct {
+type SiteUsecase struct {
 }
 
 var siteRepository = SiteRepositoryImpl{}
 
-func (s *SiteUsecaseImpl) FindAll() ([]*SiteEntity, error) {
+func (s *SiteUsecase) FindAll() ([]*SiteEntity, error) {
 	sites, err := siteRepository.FindAll(SiteQuery{
 		isEnabled: true,
 	})
@@ -20,7 +15,7 @@ func (s *SiteUsecaseImpl) FindAll() ([]*SiteEntity, error) {
 	return sites, nil
 }
 
-func (s *SiteUsecaseImpl) FindByID(id int) (*SiteEntity, error) {
+func (s *SiteUsecase) FindByID(id int) (*SiteEntity, error) {
 	site, err := siteRepository.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -28,7 +23,7 @@ func (s *SiteUsecaseImpl) FindByID(id int) (*SiteEntity, error) {
 	return site, nil
 }
 
-func (s *SiteUsecaseImpl) Create(siteReq SiteCreateRequestBody) (*SiteEntity, error) {
+func (s *SiteUsecase) Create(siteReq SiteCreateRequestBody) (*SiteEntity, error) {
 	site := createSiteEntity(SiteCreateParam{
 		Name: siteReq.Name,
 	})
@@ -37,4 +32,19 @@ func (s *SiteUsecaseImpl) Create(siteReq SiteCreateRequestBody) (*SiteEntity, er
 		return nil, err
 	}
 	return newSite, nil
+}
+
+func (s *SiteUsecase) Delete(id int) (int, error) {
+	targetSite, err := siteRepository.FindByID(id)
+	if err != nil {
+		return 0, err
+	}
+	if targetSite == nil {
+		return 0, nil
+	}
+	err = siteRepository.Delete(id)
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
 }

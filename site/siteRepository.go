@@ -12,6 +12,7 @@ type SiteRepository interface {
 	FindAll() ([]*SiteEntity, error)
 	FindByID(id int) (*SiteEntity, error)
 	Create(site SiteEntity) (*SiteEntity, error)
+	Delete(id int) error
 }
 
 type SiteRepositoryImpl struct {
@@ -73,4 +74,12 @@ func (s *SiteRepositoryImpl) Create(site SiteEntity) (*SiteEntity, error) {
 		},
 	)
 	return returnSite, nil
+}
+
+func (s *SiteRepositoryImpl) Delete(id int) error {
+	conn := db.GetDBConn().DB
+	if err := conn.Where("id = ?", id).Delete(&Site{}).Error; err != nil {
+		return err
+	}
+	return nil
 }
