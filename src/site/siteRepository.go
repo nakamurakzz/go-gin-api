@@ -1,6 +1,6 @@
 package site
 
-import "github.com/nakamurakzz/go-gin-api/db"
+import "github.com/nakamurakzz/go-gin-api/src/db"
 
 type Site struct {
 	ID        int

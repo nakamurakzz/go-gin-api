@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/nakamurakzz/go-gin-api/util"
+	"github.com/nakamurakzz/go-gin-api/src/util"
 )
 
 var siteUsecase = SiteUsecase{}

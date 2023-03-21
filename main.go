@@ -5,9 +5,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/nakamurakzz/go-gin-api/config"
-	"github.com/nakamurakzz/go-gin-api/db"
-	"github.com/nakamurakzz/go-gin-api/site"
+	"github.com/nakamurakzz/go-gin-api/src/config"
+	"github.com/nakamurakzz/go-gin-api/src/db"
+	"github.com/nakamurakzz/go-gin-api/src/site"
 )
 
 func setupRouter() *gin.Engine {

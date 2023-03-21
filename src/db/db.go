@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nakamurakzz/go-gin-api/config"
+	"github.com/nakamurakzz/go-gin-api/src/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
