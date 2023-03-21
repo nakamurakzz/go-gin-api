@@ -1,5 +1,11 @@
 # go-gin-api
-ginで作るWebAPIサーバー
+go-ginで作るWebAPIサーバー
+
+## Webフレームワーク
+- go-gin
+
+## ORM
+- gorm
 
 # build
 ```bash
