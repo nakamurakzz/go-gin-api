@@ -1,8 +1,7 @@
 package site
 
 import (
-	"errors"
-	"math/rand"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -10,7 +9,7 @@ import (
 	"github.com/nakamurakzz/go-gin-api/util"
 )
 
-var siteUsecase = SiteUsecaseImpl{}
+var siteUsecase = SiteUsecase{}
 
 func GetSite(c *gin.Context) {
 	var data interface{}
@@ -18,13 +17,6 @@ func GetSite(c *gin.Context) {
 	message := "ok"
 	status := http.StatusOK
 
-	// if err := errorFunc(); err != nil {
-	// 	message = err.Error()
-	// 	data = nil
-	// 	status = http.StatusInternalServerError
-	// }
-
-	// SiteRepositoryを使ってDBからデータを取得する
 	sites, err := siteUsecase.FindAll()
 
 	if err != nil {
@@ -39,14 +31,6 @@ func GetSite(c *gin.Context) {
 	})
 }
 
-// 10回に1度はエラーになる関数
-func errorFunc() error {
-	if rand.Intn(10) == 0 {
-		return nil
-	}
-	return errors.New("2回に1度発生するERROR")
-}
-
 func GetSiteById(c *gin.Context) {
 	message := "ok"
 	status := http.StatusOK
@@ -54,13 +38,21 @@ func GetSiteById(c *gin.Context) {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		util.HttpErrorResponse(c, http.StatusUnprocessableEntity, err)
+		return
 	}
 
 	site, err := siteUsecase.FindByID(id)
 
 	if err != nil {
 		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	if site.ID == 0 {
+		log.Println("koko")
+		util.HttpNotFoundResponse(c)
+		return
 	}
 
 	data = site
@@ -81,17 +73,53 @@ func PostSite(c *gin.Context) {
 
 	var site SiteCreateRequestBody
 	if err := c.BindJSON(&site); err != nil {
-		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		util.HttpErrorResponse(c, http.StatusUnprocessableEntity, err)
+		return
 	}
 
 	// SiteRepositoryを使ってDBにデータを保存する
 	data, err := siteUsecase.Create(site)
 	if err != nil {
 		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		return
 	}
 
 	c.IndentedJSON(status, gin.H{
 		"message": message,
 		"data":    data,
+	})
+}
+
+func DeleteSite(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		util.HttpErrorResponse(c, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	site, err := siteUsecase.FindByID(id)
+	if err != nil {
+		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	if site.ID == 0 {
+		util.HttpNotFoundResponse(c)
+		return
+	}
+
+	id, err = siteUsecase.Delete(id)
+	if err != nil {
+		util.HttpErrorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	message := "ok"
+	status := http.StatusNoContent
+
+	c.IndentedJSON(status, gin.H{
+		"message": message,
+		"data":    nil,
 	})
 }
