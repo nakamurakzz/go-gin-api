@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestJWT(t *testing.T) {
+func TestEmbed(t *testing.T) {
 	want := []byte("-----BEGIN PUBLIC KEY-----")
 	if !bytes.Contains(rawPublicKey, want) {
 		t.Errorf("rawPublicKey = %v, want %v", rawPublicKey, want)
