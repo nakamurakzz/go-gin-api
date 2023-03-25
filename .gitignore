@@ -1,3 +1,6 @@
+*.pem
+auth/cert/*.pem
+
 volumes
 tmp
 .env
