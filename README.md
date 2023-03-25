@@ -31,3 +31,10 @@ make up
 ```bash
 make migrate
 ```
+
+# create key
+```bash
+cd auth/secret
+openssl genrsa 4096 > secre.pem
+openssl rsa -pubout < secre.pem > public.pem
+```
